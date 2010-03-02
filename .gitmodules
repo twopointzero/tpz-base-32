@@ -1,0 +1,3 @@
+[submodule "Packages/NUnit"]
+	path = Packages/NUnit
+	url = git://github.com/twopointzero/NUnit.git
