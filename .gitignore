@@ -1,0 +1,14 @@
+#Exclude system-generated files we never want to track
+Thumbs.db
+desktop.ini
+.DS_Store
+
+*.suo
+*.csuser
+*.[Rr]e[Ss]harper.user
+[Bb]in/
+[Oo]bj/
+_ReSharper*/
+
+#NOTE: Any Packages folder likely contains its own .gitignore file.
+#      That file likely force includes all files via !*
