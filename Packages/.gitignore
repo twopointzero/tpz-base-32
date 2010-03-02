@@ -1,0 +1,4 @@
+# Force the inclusion of all files within the Packages folder.
+# Without this, higher-level .gitignores would likely exclude
+# things like bin folders, etc.
+!*
