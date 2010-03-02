@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("TpzBase32")]
+[assembly: AssemblyTitle("twopointzero.TpzBase32")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("TpzBase32")]
+[assembly: AssemblyProduct("twopointzero.TpzBase32")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
