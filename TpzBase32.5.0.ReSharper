@@ -24,6 +24,7 @@
           <Item>unsafe</Item>
           <Item>volatile</Item>
         </MODIFIERS_ORDER>
+        <SPACE_AFTER_TYPECAST_PARENTHESES>False</SPACE_AFTER_TYPECAST_PARENTHESES>
       </FormatSettings>
       <UsingsSettings />
       <Naming2>
