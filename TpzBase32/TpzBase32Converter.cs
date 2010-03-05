@@ -62,11 +62,6 @@ namespace twopointzero.TpzBase32
         /// </summary>
         private static IEnumerable<byte> ConvertToQuintetEnumerableImpl(IEnumerable<bool> input)
         {
-            if (!input.Any())
-            {
-                yield break;
-            }
-
             byte accumulator = 0;
             byte offset = 0;
             var enumerator = input.GetEnumerator();
