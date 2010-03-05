@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace twopointzero.TpzBase32
 {
@@ -97,7 +98,7 @@ namespace twopointzero.TpzBase32
         {
             if (input > 31)
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException("input");
             }
 
             return ZBase32Alphabet[input];
@@ -124,10 +125,33 @@ namespace twopointzero.TpzBase32
         {
             if (input == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("input");
             }
 
             return input.Select(o => EncodeQuintet(o));
+        }
+
+        /// <summary>
+        /// ConvertToString accepts an enumerable of Unicode characters and
+        /// concatenates them into a single string.
+        /// </summary>
+        /// <param name="input">A non-null enumerable of characters.</param>
+        /// <returns>A string representing the concatenation of the input
+        /// enumerable's characters. If the input enumerable contains zero
+        /// members, an empty string is returned.</returns>
+        public static string ConvertToString(IEnumerable<char> input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            var sb = new StringBuilder();
+            foreach(var item in input)
+            {
+                sb.Append(item);
+            }
+            return sb.ToString();
         }
     }
 }
