@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace twopointzero.TpzBase32
 {
@@ -20,7 +19,7 @@ namespace twopointzero.TpzBase32
         {
             for (int i = 0; i < 32; i++)
             {
-                yield return ((uint)input & (uint)Math.Pow(2, i)) != 0;
+                yield return (((uint)input >> i) & 1) == 1;
             }
         }
     }
