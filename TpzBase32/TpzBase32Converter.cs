@@ -6,6 +6,8 @@ namespace twopointzero.TpzBase32
 {
     public static class TpzBase32Converter
     {
+        private const string ZBase32Alphabet = "ybndrfg8ejkmcpqxot1uwisza345h769";
+
         /// <summary>
         /// ConvertToBitEnumerable converts the raw bit representation
         /// of the provided Int32 input argument into an enumerable of Boolean
@@ -80,6 +82,52 @@ namespace twopointzero.TpzBase32
             {
                 yield return accumulator;
             }
+        }
+
+        /// <summary>
+        /// EncodeQuintet encodes a single quintet of bits into the
+        /// matching character within the z-base-32 encoding alphabet.
+        /// </summary>
+        /// <param name="input">A byte containing 5 low bits representing the
+        /// value to be encoded. The value provided must fall with 0 through 31
+        /// inclusively, otherwise an ArgumentOutOfRangeException will be thrown.</param>
+        /// <returns>The character value representing the input argument as
+        /// per the z-base-32 encoding alphabet.</returns>
+        public static char EncodeQuintet(byte input)
+        {
+            if (input > 31)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            return ZBase32Alphabet[input];
+        }
+
+        /// <summary>
+        /// EncodeQuintets encodes an enumerable containing any number of
+        /// bytes, each representing a quintet of bits, into an enumerable
+        /// of Unicode characters where each input quintet is encoded into
+        /// its z-base-32 encoded character representation.
+        /// </summary>
+        /// <param name="input">A non-null enumerable of bytes representing
+        /// quintets of bits.</param>
+        /// <returns>An enumerable of Unicode characters each of which
+        /// is the z-base-32 encoded representation of its corresponding
+        /// quintet in the input enumerable.</returns>
+        /// <remarks>As the encoding is performed in a lazy streaming
+        /// fashion, any byte values the fall outside the range of those
+        /// that can be encoded (e.g. those with any of bits 6, 7, and/or 8
+        /// high) will result in an ArgumentOutOfRange exception but only
+        /// once the caller attempts to retrieve that specific value from
+        /// the returned enumerator.</remarks>
+        public static IEnumerable<char> EncodeQuintets(IEnumerable<byte> input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            return input.Select(o => EncodeQuintet(o));
         }
     }
 }
