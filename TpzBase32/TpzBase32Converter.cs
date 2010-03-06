@@ -25,7 +25,7 @@ namespace twopointzero.TpzBase32
             return ConvertToBitEnumerable((uint)input, 32);
         }
 
-        private static IEnumerable<bool> ConvertToBitEnumerable(uint input, int bits)
+        private static IEnumerable<bool> ConvertToBitEnumerable(uint input, byte bits)
         {
             for (int i = 0; i < bits; i++)
             {
@@ -55,20 +55,16 @@ namespace twopointzero.TpzBase32
                 throw new ArgumentNullException("input");
             }
 
-            // We need to delgate to the method below so that the argument
-            // check above runs immediately. If our yield calls were in this
-            // method, the compiler's iterator support would defer the argument
-            // until the first MoveNext call against the returned enumerable.
-            return ConvertToQuintetEnumerableImpl(input);
+            return ConvertToQuintetEnumerableImpl(input, 5).Select(o => (byte)o);
         }
 
         /// <summary>
         /// ConvertToQuintetEnumerableImpl provides the iterator implementation
-        /// that services ConvertToQuintetEnumerable, allowing ConvertToQuintetEnumerable
+        /// that services methods like ConvertToQuintetEnumerable, allowing them
         /// to immediately perform input validation when called, instead of
         /// accidentally deferring it until the first enumerator MoveNext call;
         /// </summary>
-        private static IEnumerable<byte> ConvertToQuintetEnumerableImpl(IEnumerable<bool> input)
+        private static IEnumerable<uint> ConvertToQuintetEnumerableImpl(IEnumerable<bool> input, byte bits)
         {
             byte accumulator = 0;
             byte offset = 0;
@@ -77,7 +73,7 @@ namespace twopointzero.TpzBase32
             {
                 byte current = enumerator.Current ? (byte)1 : (byte)0;
                 accumulator |= (byte)(current << offset++);
-                if (offset == 5)
+                if (offset == bits)
                 {
                     yield return accumulator;
                     accumulator = 0;
