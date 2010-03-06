@@ -213,5 +213,32 @@ namespace twopointzero.TpzBase32
 
             return (byte)index;
         }
+
+        /// <summary>
+        /// DecodeQuintets decodes an enumerable containing any number of
+        /// characters, each within the set of encoding characters, into
+        /// an enumerable of 5 bit values represented as bytes.
+        /// </summary>
+        /// <param name="input">A non-null enumerable of characters each
+        /// of which is within the set of encoding characters
+        /// quintets of bits.</param>
+        /// <returns>An enumerable of 5 bit values represented as bytes,
+        /// decoded from each of the respective encoded characters in the
+        /// input enumerable.</returns>
+        /// <remarks>As the decoding is performed in a lazy streaming
+        /// fashion, any input characters values the fall outside the set
+        /// of encoding characters will result in an ArgumentOutOfRange
+        /// exception but this exception will only be thrown once the caller
+        /// attempts to retrieve that specific value from
+        /// the returned enumerator.</remarks>
+        public static IEnumerable<byte> DecodeQuintets(IEnumerable<char> input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            return input.Select(o => DecodeQuintet(o));
+        }
     }
 }
