@@ -22,9 +22,14 @@ namespace twopointzero.TpzBase32
         /// ordered from least-significant bit to most-significant bit.</returns>
         public static IEnumerable<bool> ConvertToBitEnumerable(int input)
         {
-            for (int i = 0; i < 32; i++)
+            return ConvertToBitEnumerable((uint)input, 32);
+        }
+
+        private static IEnumerable<bool> ConvertToBitEnumerable(uint input, int bits)
+        {
+            for (int i = 0; i < bits; i++)
             {
-                yield return (((uint)input >> i) & 1) == 1;
+                yield return ((input >> i) & 1) == 1;
             }
         }
 
@@ -260,29 +265,7 @@ namespace twopointzero.TpzBase32
                 throw new ArgumentNullException("input");
             }
 
-            // We need to delgate to the method below so that the argument
-            // check above runs immediately. If our yield calls were in this
-            // method, the compiler's iterator support would defer the argument
-            // until the first MoveNext call against the returned enumerable.
-            return ConvertQuintetsToBitEnumerableImpl(input);
-        }
-
-        /// <summary>
-        /// ConvertQuintetsToBitEnumerableImpl provides the iterator implementation
-        /// that services ConvertQuintetsToBitEnumerable, allowing ConvertQuintetsToBitEnumerable
-        /// to immediately perform input validation when called, instead of
-        /// accidentally deferring it until the first enumerator MoveNext call;
-        /// </summary>
-        private static IEnumerable<bool> ConvertQuintetsToBitEnumerableImpl(IEnumerable<byte> input)
-        {
-            foreach (byte value in input)
-            {
-                yield return (value & 1) == 1;
-                yield return (value & 2) == 2;
-                yield return (value & 4) == 4;
-                yield return (value & 8) == 8;
-                yield return (value & 16) == 16;
-            }
+            return input.SelectMany(o => ConvertToBitEnumerable(o, 5));
         }
     }
 }
