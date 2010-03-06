@@ -240,5 +240,49 @@ namespace twopointzero.TpzBase32
 
             return input.Select(o => DecodeQuintet(o));
         }
+
+        /// <summary>
+        /// ConvertQuintetsToBitEnumerable converts an enumerable of 5 bit values
+        /// carried in bytes (in the low 5 bits) into an enumerable of booleans
+        /// each of which represents a bit state from the input enumerable,
+        /// ordered from least significant bit to most.
+        /// </summary>
+        /// <param name="input">A non-null enumerable of bytes where each byte
+        /// represents a 5 bit value captured in the byte's low 5 bits.</param>
+        /// <returns>A non-null enumerable of zero or more booleans, with a boolean
+        /// representing the state of one bit from each of the input argument's 5 bit values.
+        /// The returned boolean bits are ordered from first quintet to last and
+        /// within each quintet are ordered from least signficant bit to most.</returns>
+        public static IEnumerable<bool> ConvertQuintetsToBitEnumerable(IEnumerable<byte> input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            // We need to delgate to the method below so that the argument
+            // check above runs immediately. If our yield calls were in this
+            // method, the compiler's iterator support would defer the argument
+            // until the first MoveNext call against the returned enumerable.
+            return ConvertQuintetsToBitEnumerableImpl(input);
+        }
+
+        /// <summary>
+        /// ConvertQuintetsToBitEnumerableImpl provides the iterator implementation
+        /// that services ConvertQuintetsToBitEnumerable, allowing ConvertQuintetsToBitEnumerable
+        /// to immediately perform input validation when called, instead of
+        /// accidentally deferring it until the first enumerator MoveNext call;
+        /// </summary>
+        private static IEnumerable<bool> ConvertQuintetsToBitEnumerableImpl(IEnumerable<byte> input)
+        {
+            foreach (byte value in input)
+            {
+                yield return (value & 1) == 1;
+                yield return (value & 2) == 2;
+                yield return (value & 4) == 4;
+                yield return (value & 8) == 8;
+                yield return (value & 16) == 16;
+            }
+        }
     }
 }
