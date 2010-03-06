@@ -6,7 +6,7 @@ using twopointzero.TpzBase32;
 namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests
 {
     [TestFixture]
-    public class ConvertToString
+    public class ConvertCharEnumerableToString
     {
         [Test]
         public void GivenAnEnumerableOfCharactersShouldReturnTheExpectedResult()
