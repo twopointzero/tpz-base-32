@@ -192,5 +192,26 @@ namespace twopointzero.TpzBase32
                 .Replace('2', 'z')
                 .Replace('v', 'u');
         }
+
+        /// <summary>
+        /// DecodeQuintet decodes a single character within the z-base-32
+        /// encoding alphabet into its matching 5 bit value, as a byte.
+        /// </summary>
+        /// <param name="input">A character in the z-base-32 encoding alphabet.
+        /// The value provided must fall within the expected set of characters,
+        /// otherwise an ArgumentOutOfRangeException will be thrown.</param>
+        /// <returns>The 5 bit value, as a byte, representing the input
+        /// argument once decoded via the z-base-32 encoding alphabet.</returns>
+        public static byte DecodeQuintet(char input)
+        {
+            var index = ZBase32Alphabet.IndexOf(input);
+
+            if (index == -1)
+            {
+                throw new ArgumentOutOfRangeException("input");
+            }
+
+            return (byte)index;
+        }
     }
 }

@@ -54,6 +54,7 @@
       <Link>Properties\AssemblyInfoCommon.cs</Link>
     </Compile>
     <Compile Include="TpzBase32ConverterTests\ConvertToString.cs" />
+    <Compile Include="TpzBase32ConverterTests\DecodeQuintet.cs" />
     <Compile Include="TpzBase32ConverterTests\EncodeQuintets.cs" />
     <Compile Include="TpzBase32ConverterTests\NormalizeChar.cs" />
     <Compile Include="ZBase32Alphabet.cs" />
