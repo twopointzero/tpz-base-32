@@ -53,6 +53,7 @@
     <Compile Include="..\AssemblyInfoCommon.cs">
       <Link>Properties\AssemblyInfoCommon.cs</Link>
     </Compile>
+    <Compile Include="TpzBase32ConverterTests\ConvertBitEnumerableToIntEnumerable.cs" />
     <Compile Include="TpzBase32ConverterTests\ConvertQuintetEnumerableToBitEnumerable.cs" />
     <Compile Include="TpzBase32ConverterTests\ConvertToString.cs" />
     <Compile Include="TpzBase32ConverterTests\DecodeQuintet.cs" />

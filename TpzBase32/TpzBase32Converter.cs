@@ -20,6 +20,9 @@ namespace twopointzero.TpzBase32
         /// <param name="input">The Int32 value whose raw bit states will be returned in enumerable form.</param>
         /// <returns>An enumerable of Boolean values representing the bit states of the input argument,
         /// ordered from least-significant bit to most-significant bit.</returns>
+        /// <remarks>Note that the conversion process converts negative values
+        /// via the two's complement behaviour you would reasonably expect with
+        /// an Int32.</remarks>
         public static IEnumerable<bool> ConvertToBitEnumerable(int input)
         {
             return ConvertToBitEnumerable((uint)input, 32);
@@ -55,16 +58,16 @@ namespace twopointzero.TpzBase32
                 throw new ArgumentNullException("input");
             }
 
-            return ConvertToQuintetEnumerableImpl(input, 5).Select(o => (byte)o);
+            return ConvertBitsToUInt32(input, 5).Select(o => (byte)o);
         }
 
         /// <summary>
-        /// ConvertToQuintetEnumerableImpl provides the iterator implementation
+        /// ConvertBitsToUInt32 provides the iterator implementation
         /// that services methods like ConvertToQuintetEnumerable, allowing them
         /// to immediately perform input validation when called, instead of
         /// accidentally deferring it until the first enumerator MoveNext call;
         /// </summary>
-        private static IEnumerable<uint> ConvertToQuintetEnumerableImpl(IEnumerable<bool> input, byte bits)
+        private static IEnumerable<uint> ConvertBitsToUInt32(IEnumerable<bool> input, byte bitsPerUInt32)
         {
             uint accumulator = 0;
             byte offset = 0;
@@ -73,7 +76,7 @@ namespace twopointzero.TpzBase32
             {
                 uint current = enumerator.Current ? (byte)1 : (byte)0;
                 accumulator |= (current << offset++);
-                if (offset == bits)
+                if (offset == bitsPerUInt32)
                 {
                     yield return accumulator;
                     accumulator = 0;
@@ -262,6 +265,33 @@ namespace twopointzero.TpzBase32
             }
 
             return input.SelectMany(o => ConvertToBitEnumerable(o, 5));
+        }
+
+        /// <summary>
+        /// ConvertToIntEnumerable converts an enumerable of boolean values
+        /// representing bits into an enumerable of Int32 values each of which
+        /// represents 32 bits from the input enumerable.
+        /// </summary>
+        /// <param name="input">A non-null enumerable of booleans representing bits.</param>
+        /// <returns>A non-null enumerable of zero or more Int32 values, with each
+        /// containing 32 bits worth of entries from the input enumerable.</returns>
+        /// <remarks>The input enumerable can include any number of bits, not
+        /// just in multiples of 32, but always produces results which to the
+        /// recipient may be indistinguishable from an equivalent input
+        /// enumerable with additional false values. When round-tripping using
+        /// these methods, additional steps will need to be taken externally
+        /// in order to account for input enumerables containing a number of
+        /// values that is not an even multiple of 32. Note also that the
+        /// conversion process converts negative values via the two's
+        /// complement behaviour you would reasonably expect with an Int32.</remarks>
+        public static IEnumerable<int> ConvertToIntEnumerable(IEnumerable<bool> input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            return ConvertBitsToUInt32(input, 32).Select(o => (int)o);
         }
     }
 }
