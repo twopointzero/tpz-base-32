@@ -308,5 +308,36 @@ namespace twopointzero.TpzBase32
             var result = ConvertToString(chars);
             return result;
         }
+
+        /// <summary>
+        /// Encodes a single Int32 value, returning a string of between one
+        /// and seven characters. Returned strings of less than seven
+        /// characters indicate input values expressable in fewer bits of
+        /// representation, and are equivalent in value to themselves
+        /// padded to a length of seven characters using the character y (the
+        /// lowercase Y character.)
+        /// </summary>
+        /// <param name="input">Any Int32 value.</param>
+        /// <returns>A one-to-seven-character string representing the input
+        /// argument in encoded form, trimmed of any unnecessary trailing
+        /// characters that represent zero in the encoding.</returns>
+        /// <remarks>Input values of zero are encoded as a single y (the
+        /// lowercase Y) character in order to disambiguate them and
+        /// to allow for clean round-tripping.</remarks>
+        public static string Encode(int input)
+        {
+            char zero = ZBase32Alphabet[0];
+
+            if (input == 0)
+            {
+                return zero.ToString();
+            }
+
+            var bits = ConvertToBitEnumerable(input);
+            var quintets = ConvertToQuintetEnumerable(bits);
+            var chars = EncodeQuintets(quintets);
+            var result = ConvertToString(chars);
+            return result.TrimEnd(zero);
+        }
     }
 }

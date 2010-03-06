@@ -20,7 +20,7 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests
         }
 
         [Test]
-        public void GivenNegativeOneShouldEncodeTo_byyyyyy()
+        public void GivenNegativeOneShouldEncodeTo_999999d()
         {
             Assert.AreEqual("999999d", TpzBase32Converter.EncodeWithPadding(-1));
         }

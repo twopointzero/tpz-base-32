@@ -58,6 +58,7 @@
     <Compile Include="TpzBase32ConverterTests\ConvertCharEnumerableToString.cs" />
     <Compile Include="TpzBase32ConverterTests\DecodeQuintet.cs" />
     <Compile Include="TpzBase32ConverterTests\DecodeQuintets.cs" />
+    <Compile Include="TpzBase32ConverterTests\EncodeInt32ToString.cs" />
     <Compile Include="TpzBase32ConverterTests\EncodeInt32ToStringWithPadding.cs" />
     <Compile Include="TpzBase32ConverterTests\EncodeQuintets.cs" />
     <Compile Include="TpzBase32ConverterTests\NormalizeChar.cs" />
