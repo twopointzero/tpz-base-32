@@ -339,5 +339,36 @@ namespace twopointzero.TpzBase32
             var result = ConvertToString(chars);
             return result.TrimEnd(zero);
         }
+
+        /// <summary>
+        /// Decodes an encoded string representing a single Int32 value,
+        /// returning that value.
+        /// </summary>
+        /// <param name="input">A non-null, non-empty string of from 1 to 7
+        /// encoded characters in length. All characters within the string
+        /// must be valid characters within the encoding. Any leading and/or
+        /// trailing whitespace or other non-encoding values must be removed
+        /// before calling this method.</param>
+        /// <returns>The Int32 value represented by the encoded input string.
+        /// </returns>
+        public static int DecodeToInt32(string input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            if (input.Length == 0 || input.Length > 7)
+            {
+                throw new ArgumentOutOfRangeException("input", input,
+                                                      "Must be string of between 1 and 7 characters inclusive.");
+            }
+
+            var quintets = DecodeQuintets(input);
+            var bits = ConvertQuintetsToBitEnumerable(quintets);
+            var ints = ConvertToIntEnumerable(bits);
+            var result = ints.First();
+            return result;
+        }
     }
 }

@@ -7,70 +7,75 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests
     [TestFixture]
     public class EncodeInt32ToStringWithPadding
     {
+        private static void Encode(int input, string expected)
+        {
+            Assert.AreEqual(expected, TpzBase32Converter.EncodeWithPadding(input));
+        }
+
         [Test]
         public void GivenMaxValueShouldEncodeTo_999999b()
         {
-            Assert.AreEqual("999999b", TpzBase32Converter.EncodeWithPadding(int.MaxValue));
+            Encode(int.MaxValue, "999999b");
         }
 
         [Test]
         public void GivenMinValueShouldEncodeTo_yyyyyyn()
         {
-            Assert.AreEqual("yyyyyyn", TpzBase32Converter.EncodeWithPadding(int.MinValue));
+            Encode(int.MinValue, "yyyyyyn");
         }
 
         [Test]
         public void GivenNegativeOneShouldEncodeTo_999999d()
         {
-            Assert.AreEqual("999999d", TpzBase32Converter.EncodeWithPadding(-1));
+            Encode(-1, "999999d");
         }
 
         [Test]
         public void GivenOneShouldEncodeTo_byyyyyy()
         {
-            Assert.AreEqual("byyyyyy", TpzBase32Converter.EncodeWithPadding(1));
+            Encode(1, "byyyyyy");
         }
 
         [Test]
         public void GivenThirtyTwoToTheFifthShouldEncodeTo_yyyyyby()
         {
-            Assert.AreEqual("yyyyyby", TpzBase32Converter.EncodeWithPadding((int)Math.Pow(32, 5)));
+            Encode((int)Math.Pow(32, 5), "yyyyyby");
         }
 
         [Test]
         public void GivenThirtyTwoToTheFirstShouldEncodeTo_ybyyyyy()
         {
-            Assert.AreEqual("ybyyyyy", TpzBase32Converter.EncodeWithPadding(32));
+            Encode(32, "ybyyyyy");
         }
 
         [Test]
         public void GivenThirtyTwoToTheFourthShouldEncodeTo_yyyybyy()
         {
-            Assert.AreEqual("yyyybyy", TpzBase32Converter.EncodeWithPadding((int)Math.Pow(32, 4)));
+            Encode((int)Math.Pow(32, 4), "yyyybyy");
         }
 
         [Test]
         public void GivenThirtyTwoToTheSecondShouldEncodeTo_yybyyyy()
         {
-            Assert.AreEqual("yybyyyy", TpzBase32Converter.EncodeWithPadding((int)Math.Pow(32, 2)));
+            Encode((int)Math.Pow(32, 2), "yybyyyy");
         }
 
         [Test]
         public void GivenThirtyTwoToTheSixthShouldEncodeTo_yyyyyyb()
         {
-            Assert.AreEqual("yyyyyyb", TpzBase32Converter.EncodeWithPadding((int)Math.Pow(32, 6)));
+            Encode((int)Math.Pow(32, 6), "yyyyyyb");
         }
 
         [Test]
         public void GivenThirtyTwoToTheThirdShouldEncodeTo_yyybyyy()
         {
-            Assert.AreEqual("yyybyyy", TpzBase32Converter.EncodeWithPadding((int)Math.Pow(32, 3)));
+            Encode((int)Math.Pow(32, 3), "yyybyyy");
         }
 
         [Test]
         public void GivenZeroShouldEncodeTo_yyyyyyy()
         {
-            Assert.AreEqual("yyyyyyy", TpzBase32Converter.EncodeWithPadding(0));
+            Encode(0, "yyyyyyy");
         }
     }
 }
