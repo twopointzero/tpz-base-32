@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="TpzBase32ConverterTests\ConvertToString.cs" />
     <Compile Include="TpzBase32ConverterTests\EncodeQuintets.cs" />
+    <Compile Include="TpzBase32ConverterTests\NormalizeChar.cs" />
     <Compile Include="ZBase32Alphabet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TpzBase32ConverterTests\ConvertBitEnumerableToQuintetEnumerable.cs" />
