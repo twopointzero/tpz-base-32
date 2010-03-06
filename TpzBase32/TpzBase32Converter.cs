@@ -293,5 +293,20 @@ namespace twopointzero.TpzBase32
 
             return ConvertBitsToUInt32(input, 32).Select(o => (int)o);
         }
+
+        /// <summary>
+        /// Encodes a single Int32 value, returning a seven character string.
+        /// </summary>
+        /// <param name="input">Any Int32 value.</param>
+        /// <returns>A seven character string representing the input argument
+        /// in encoded form.</returns>
+        public static string EncodeWithPadding(int input)
+        {
+            var bits = ConvertToBitEnumerable(input);
+            var quintets = ConvertToQuintetEnumerable(bits);
+            var chars = EncodeQuintets(quintets);
+            var result = ConvertToString(chars);
+            return result;
+        }
     }
 }
