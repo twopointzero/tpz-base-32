@@ -5,7 +5,7 @@ using twopointzero.TpzBase32.InternalUseExtensions;
 namespace twopointzero.TpzBase32Tests.InternalUseExtensionsTests.ExtensionsTests
 {
     [TestFixture]
-    public class NormalizeToTpzBase32Alphabet
+    public class NormalizeStringToTpzBase32Alphabet
     {
         [Test]
         public void GivenAValueEntirelyOutsideTheCharacterSetShouldReturnIt()

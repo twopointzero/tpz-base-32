@@ -62,7 +62,7 @@
     <Compile Include="TpzBase32ConverterTests\EncodeInt32ToString.cs" />
     <Compile Include="TpzBase32ConverterTests\EncodeInt32ToStringWithPadding.cs" />
     <Compile Include="InternalUseExtensionsTests\ExtensionsTests\EncodeQuintets.cs" />
-    <Compile Include="InternalUseExtensionsTests\ExtensionsTests\NormalizeToTpzBase32Alphabet.cs" />
+    <Compile Include="InternalUseExtensionsTests\ExtensionsTests\NormalizeStringToTpzBase32Alphabet.cs" />
     <Compile Include="TpzBase32ConverterTests\RoundTripInt32.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
