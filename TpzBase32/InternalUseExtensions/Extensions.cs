@@ -93,13 +93,13 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
 
         /// <summary>
         /// EncodeQuintet encodes a single quintet of bits into the
-        /// matching character within the z-base-32 encoding alphabet.
+        /// matching character within the tpz-base-32 encoding alphabet.
         /// </summary>
         /// <param name="input">A byte containing 5 low bits representing the
         /// value to be encoded. The value provided must fall with 0 through 31
         /// inclusively, otherwise an ArgumentOutOfRangeException will be thrown.</param>
         /// <returns>The character value representing the input argument as
-        /// per the z-base-32 encoding alphabet.</returns>
+        /// per the tpz-base-32 encoding alphabet.</returns>
         internal static char EncodeQuintet(this byte input)
         {
             if (input > 31)
@@ -114,12 +114,12 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         /// EncodeQuintets encodes an enumerable containing any number of
         /// bytes, each representing a quintet of bits, into an enumerable
         /// of Unicode characters where each input quintet is encoded into
-        /// its z-base-32 encoded character representation.
+        /// its tpz-base-32 encoded character representation.
         /// </summary>
         /// <param name="input">A non-null enumerable of bytes representing
         /// quintets of bits.</param>
         /// <returns>An enumerable of Unicode characters each of which
-        /// is the z-base-32 encoded representation of its corresponding
+        /// is the tpz-base-32 encoded representation of its corresponding
         /// quintet in the input enumerable.</returns>
         /// <remarks>As the encoding is performed in a lazy streaming
         /// fashion, any byte values the fall outside the range of those
@@ -200,14 +200,14 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         }
 
         /// <summary>
-        /// DecodeToQuintet decodes a single character within the z-base-32
+        /// DecodeToQuintet decodes a single character within the tpz-base-32
         /// encoding alphabet into its matching 5 bit value, as a byte.
         /// </summary>
-        /// <param name="input">A character in the z-base-32 encoding alphabet.
+        /// <param name="input">A character in the tpz-base-32 encoding alphabet.
         /// The value provided must fall within the expected set of characters,
         /// otherwise an ArgumentOutOfRangeException will be thrown.</param>
         /// <returns>The 5 bit value, as a byte, representing the input
-        /// argument once decoded via the z-base-32 encoding alphabet.</returns>
+        /// argument once decoded via the tpz-base-32 encoding alphabet.</returns>
         internal static byte DecodeToQuintet(this char input)
         {
             var index = Constants.EncodingAlphabet.IndexOf(input);
