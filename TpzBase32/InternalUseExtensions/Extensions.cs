@@ -200,6 +200,41 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         }
 
         /// <summary>
+        /// NormalizeToTpzBase32Alphabet processes the provided input char, correcting errors
+        /// that commonly occur during the human transcription of numbers
+        /// and characters. 0 (the number zero) becomes o (the lowercase
+        /// letter O), l (the lowercase letter L) becomes 1 (the number one),
+        /// 2 (the number two) becomes z (the lowercase letter Z), and v (the
+        /// lowercase letter V) becomes u (the lowercase letter U), as these
+        /// are all common transcription errors. All uppercase letters become
+        /// lowercase, as the encoding is lowercase in nature.
+        /// </summary>
+        /// <param name="input">A char containing a 
+        /// character that is expected to represent an encoded value.</param>
+        /// <returns>The input character, normalized if it was required.</returns>
+        internal static char NormalizeToTpzBase32Alphabet(this char input)
+        {
+            if (input == '0')
+            {
+                return 'o';
+            }
+            if (input == 'l' || input == 'L')
+            {
+                return '1';
+            }
+            if (input == '2')
+            {
+                return 'z';
+            }
+            if (input == 'v' || input == 'V')
+            {
+                return 'u';
+            }
+
+            return char.IsUpper(input) ? char.ToLower(input) : input;
+        }
+
+        /// <summary>
         /// DecodeToQuintet decodes a single character within the tpz-base-32
         /// encoding alphabet into its matching 5 bit value, as a byte.
         /// </summary>
