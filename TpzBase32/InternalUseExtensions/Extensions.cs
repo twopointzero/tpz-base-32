@@ -245,7 +245,7 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         /// argument once decoded via the tpz-base-32 encoding alphabet.</returns>
         internal static byte DecodeToQuintet(this char input)
         {
-            var index = Constants.EncodingAlphabet.IndexOf(input);
+            var index = Constants.EncodingAlphabet.IndexOf(input.NormalizeToTpzBase32Alphabet());
 
             if (index == -1)
             {

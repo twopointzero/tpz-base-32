@@ -37,6 +37,12 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests
         }
 
         [Test]
+        public void Given_0L2V_ShouldDecodeTo_646736()
+        {
+            Decode("0L2V", 646736);
+        }
+
+        [Test]
         public void Given_999999b_ShouldDecodeTo_MaxValue()
         {
             Decode("999999b", int.MaxValue);
