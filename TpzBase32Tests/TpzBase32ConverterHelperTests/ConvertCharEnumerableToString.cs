@@ -3,7 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using twopointzero.TpzBase32;
 
-namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests.HelperTests
+namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
 {
     [TestFixture]
     public class ConvertCharEnumerableToString
@@ -15,7 +15,7 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests.HelperTests
             for (int i = 1; i < values.Length; i++)
             {
                 string expected = ZBase32Alphabet.Value.Substring(0, i);
-                string actual = TpzBase32Converter.Helper.ConvertToString(values.Take(i));
+                string actual = TpzBase32ConverterHelper.ConvertToString(values.Take(i));
                 Assert.AreEqual(expected, actual);
             }
         }
@@ -23,13 +23,13 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests.HelperTests
         [Test]
         public void GivenEmptyShouldReturnEmpty()
         {
-            Assert.AreEqual(String.Empty, TpzBase32Converter.Helper.ConvertToString(Enumerable.Empty<Char>()));
+            Assert.AreEqual(String.Empty, TpzBase32ConverterHelper.ConvertToString(Enumerable.Empty<Char>()));
         }
 
         [Test]
         public void GivenNullShouldThrowArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => TpzBase32Converter.Helper.ConvertToString(null));
+            Assert.Throws<ArgumentNullException>(() => TpzBase32ConverterHelper.ConvertToString(null));
         }
     }
 }

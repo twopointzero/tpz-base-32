@@ -3,7 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using twopointzero.TpzBase32;
 
-namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests.HelperTests
+namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
 {
     [TestFixture]
     public class EncodeQuintet
@@ -13,7 +13,7 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests.HelperTests
         {
             for (byte i = 32; i < 255; i++)
             {
-                Assert.Throws<ArgumentOutOfRangeException>(() => TpzBase32Converter.Helper.EncodeQuintet(i));
+                Assert.Throws<ArgumentOutOfRangeException>(() => TpzBase32ConverterHelper.EncodeQuintet(i));
             }
         }
 
@@ -22,7 +22,7 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests.HelperTests
         {
             for (byte i = 0; i < 31; i++)
             {
-                TpzBase32Converter.Helper.EncodeQuintet(i);
+                TpzBase32ConverterHelper.EncodeQuintet(i);
             }
         }
 
@@ -32,7 +32,7 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests.HelperTests
             var values = ZBase32Alphabet.Value.ToArray();
             for (byte i = 0; i < values.Length; i++)
             {
-                Assert.AreEqual(values[i], TpzBase32Converter.Helper.EncodeQuintet(i));
+                Assert.AreEqual(values[i], TpzBase32ConverterHelper.EncodeQuintet(i));
             }
         }
     }

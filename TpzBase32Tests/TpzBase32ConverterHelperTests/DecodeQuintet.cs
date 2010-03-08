@@ -3,7 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using twopointzero.TpzBase32;
 
-namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests.HelperTests
+namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
 {
     [TestFixture]
     public class DecodeQuintet
@@ -14,14 +14,14 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests.HelperTests
             var values = ZBase32Alphabet.Value.ToArray();
             for (byte i = 0; i < values.Length; i++)
             {
-                Assert.AreEqual(i, TpzBase32Converter.Helper.DecodeQuintet(values[i]));
+                Assert.AreEqual(i, TpzBase32ConverterHelper.DecodeQuintet(values[i]));
             }
         }
 
         [Test]
         public void GivenACharacterNotInTheEncodingShouldThrowArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => TpzBase32Converter.Helper.DecodeQuintet('!'));
+            Assert.Throws<ArgumentOutOfRangeException>(() => TpzBase32ConverterHelper.DecodeQuintet('!'));
         }
     }
 }
