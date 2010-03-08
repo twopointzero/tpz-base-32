@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace twopointzero.TpzBase32
+namespace twopointzero.TpzBase32.InternalUseExtensions
 {
-    internal static class TpzBase32ConverterHelper
+    internal static class Extensions
     {
         /// <summary>
-        /// ConvertToBitEnumerable converts the raw bit representation
+        /// Unpack converts the raw bit representation
         /// of the provided Int32 input argument into an enumerable of Boolean
         /// values with true members of the result representing the high bits
         /// in the input value, from LSb to MSb. This method can be considered
@@ -21,12 +21,12 @@ namespace twopointzero.TpzBase32
         /// <remarks>Note that the conversion process converts negative values
         /// via the two's complement behaviour you would reasonably expect with
         /// an Int32.</remarks>
-        internal static IEnumerable<bool> ConvertToBitEnumerable(int input)
+        internal static IEnumerable<bool> Unpack(this int input)
         {
-            return ConvertToBitEnumerable((uint)input, 32);
+            return ((uint)input).Unpack(32);
         }
 
-        private static IEnumerable<bool> ConvertToBitEnumerable(uint input, byte bits)
+        private static IEnumerable<bool> Unpack(this uint input, byte bits)
         {
             for (int i = 0; i < bits; i++)
             {
@@ -35,7 +35,7 @@ namespace twopointzero.TpzBase32
         }
 
         /// <summary>
-        /// ConvertToQuintetEnumerable converts an enumerable of boolean values
+        /// PackToQuintets converts an enumerable of boolean values
         /// representing bits into an enumerable of bytes each of which represents
         /// (in its low bits) five bits from the input enumerable.
         /// </summary>
@@ -49,23 +49,23 @@ namespace twopointzero.TpzBase32
         /// these methods, additional steps will need to be taken externally
         /// in order to account for input enumerables containing a number of
         /// values that is not an even multiple of five.</remarks>
-        internal static IEnumerable<byte> ConvertToQuintetEnumerable(IEnumerable<bool> input)
+        internal static IEnumerable<byte> PackToQuintets(this IEnumerable<bool> input)
         {
             if (input == null)
             {
                 throw new ArgumentNullException("input");
             }
 
-            return ConvertBitsToUInt32(input, 5).Select(o => (byte)o);
+            return input.PackToUInt32s(5).Select(o => (byte)o);
         }
 
         /// <summary>
-        /// ConvertBitsToUInt32 provides the iterator implementation
-        /// that services methods like ConvertToQuintetEnumerable, allowing them
+        /// PackToUInt32s provides the iterator implementation
+        /// that services methods like PackToQuintets, allowing them
         /// to immediately perform input validation when called, instead of
         /// accidentally deferring it until the first enumerator MoveNext call;
         /// </summary>
-        private static IEnumerable<uint> ConvertBitsToUInt32(IEnumerable<bool> input, byte bitsPerUInt32)
+        private static IEnumerable<uint> PackToUInt32s(this IEnumerable<bool> input, byte bitsPerUInt32)
         {
             uint accumulator = 0;
             byte offset = 0;
@@ -96,14 +96,14 @@ namespace twopointzero.TpzBase32
         /// inclusively, otherwise an ArgumentOutOfRangeException will be thrown.</param>
         /// <returns>The character value representing the input argument as
         /// per the z-base-32 encoding alphabet.</returns>
-        internal static char EncodeQuintet(byte input)
+        internal static char EncodeQuintet(this byte input)
         {
             if (input > 31)
             {
                 throw new ArgumentOutOfRangeException("input");
             }
 
-            return Constants.ZBase32Alphabet[input];
+            return Constants.EncodingAlphabet[input];
         }
 
         /// <summary>
@@ -123,25 +123,25 @@ namespace twopointzero.TpzBase32
         /// high) will result in an ArgumentOutOfRange exception but only
         /// once the caller attempts to retrieve that specific value from
         /// the returned enumerator.</remarks>
-        internal static IEnumerable<char> EncodeQuintets(IEnumerable<byte> input)
+        internal static IEnumerable<char> EncodeQuintets(this IEnumerable<byte> input)
         {
             if (input == null)
             {
                 throw new ArgumentNullException("input");
             }
 
-            return input.Select(o => EncodeQuintet(o));
+            return input.Select(o => o.EncodeQuintet());
         }
 
         /// <summary>
-        /// ConvertToString accepts an enumerable of Unicode characters and
+        /// AsString accepts an enumerable of Unicode characters and
         /// concatenates them into a single string.
         /// </summary>
         /// <param name="input">A non-null enumerable of characters.</param>
         /// <returns>A string representing the concatenation of the input
         /// enumerable's characters. If the input enumerable contains zero
         /// members, an empty string is returned.</returns>
-        internal static string ConvertToString(IEnumerable<char> input)
+        internal static string AsString(this IEnumerable<char> input)
         {
             if (input == null)
             {
@@ -157,7 +157,7 @@ namespace twopointzero.TpzBase32
         }
 
         /// <summary>
-        /// Normalize processes the provided input string, correcting errors
+        /// NormalizeToTpzBase32Alphabet processes the provided input string, correcting errors
         /// that commonly occur during the human transcription of numbers
         /// and characters. 0 (the number zero) becomes o (the lowercase
         /// letter O), l (the lowercase letter L) becomes 1 (the number one),
@@ -176,7 +176,7 @@ namespace twopointzero.TpzBase32
         /// to assist in locating encoded values within other larger pieces of
         /// text, but as a result it may modify other portions of the input
         /// string in unexpected ways.</remarks>
-        internal static string Normalize(string input)
+        internal static string NormalizeToTpzBase32Alphabet(this string input)
         {
             if (input == null)
             {
@@ -196,7 +196,7 @@ namespace twopointzero.TpzBase32
         }
 
         /// <summary>
-        /// DecodeQuintet decodes a single character within the z-base-32
+        /// DecodeToQuintet decodes a single character within the z-base-32
         /// encoding alphabet into its matching 5 bit value, as a byte.
         /// </summary>
         /// <param name="input">A character in the z-base-32 encoding alphabet.
@@ -204,9 +204,9 @@ namespace twopointzero.TpzBase32
         /// otherwise an ArgumentOutOfRangeException will be thrown.</param>
         /// <returns>The 5 bit value, as a byte, representing the input
         /// argument once decoded via the z-base-32 encoding alphabet.</returns>
-        internal static byte DecodeQuintet(char input)
+        internal static byte DecodeToQuintet(this char input)
         {
-            var index = Constants.ZBase32Alphabet.IndexOf(input);
+            var index = Constants.EncodingAlphabet.IndexOf(input);
 
             if (index == -1)
             {
@@ -217,7 +217,7 @@ namespace twopointzero.TpzBase32
         }
 
         /// <summary>
-        /// DecodeQuintets decodes an enumerable containing any number of
+        /// DecodeToQuintets decodes an enumerable containing any number of
         /// characters, each within the set of encoding characters, into
         /// an enumerable of 5 bit values represented as bytes.
         /// </summary>
@@ -233,18 +233,18 @@ namespace twopointzero.TpzBase32
         /// exception but this exception will only be thrown once the caller
         /// attempts to retrieve that specific value from
         /// the returned enumerator.</remarks>
-        internal static IEnumerable<byte> DecodeQuintets(IEnumerable<char> input)
+        internal static IEnumerable<byte> DecodeToQuintets(this IEnumerable<char> input)
         {
             if (input == null)
             {
                 throw new ArgumentNullException("input");
             }
 
-            return input.Select(o => DecodeQuintet(o));
+            return input.Select(o => o.DecodeToQuintet());
         }
 
         /// <summary>
-        /// ConvertQuintetsToBitEnumerable converts an enumerable of 5 bit values
+        /// UnpackQuintets converts an enumerable of 5 bit values
         /// carried in bytes (in the low 5 bits) into an enumerable of booleans
         /// each of which represents a bit state from the input enumerable,
         /// ordered from least significant bit to most.
@@ -255,18 +255,18 @@ namespace twopointzero.TpzBase32
         /// representing the state of one bit from each of the input argument's 5 bit values.
         /// The returned boolean bits are ordered from first quintet to last and
         /// within each quintet are ordered from least signficant bit to most.</returns>
-        internal static IEnumerable<bool> ConvertQuintetsToBitEnumerable(IEnumerable<byte> input)
+        internal static IEnumerable<bool> UnpackQuintets(this IEnumerable<byte> input)
         {
             if (input == null)
             {
                 throw new ArgumentNullException("input");
             }
 
-            return input.SelectMany(o => ConvertToBitEnumerable(o, 5));
+            return input.SelectMany(o => Unpack(o, 5));
         }
 
         /// <summary>
-        /// ConvertToIntEnumerable converts an enumerable of boolean values
+        /// PackToInt32s converts an enumerable of boolean values
         /// representing bits into an enumerable of Int32 values each of which
         /// represents 32 bits from the input enumerable.
         /// </summary>
@@ -282,14 +282,14 @@ namespace twopointzero.TpzBase32
         /// values that is not an even multiple of 32. Note also that the
         /// conversion process converts negative values via the two's
         /// complement behaviour you would reasonably expect with an Int32.</remarks>
-        internal static IEnumerable<int> ConvertToIntEnumerable(IEnumerable<bool> input)
+        internal static IEnumerable<int> PackToInt32s(this IEnumerable<bool> input)
         {
             if (input == null)
             {
                 throw new ArgumentNullException("input");
             }
 
-            return ConvertBitsToUInt32(input, 32).Select(o => (int)o);
+            return input.PackToUInt32s(32).Select(o => (int)o);
         }
     }
 }

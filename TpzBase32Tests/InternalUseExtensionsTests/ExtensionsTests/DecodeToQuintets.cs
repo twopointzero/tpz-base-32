@@ -1,48 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using twopointzero.TpzBase32;
+using twopointzero.TpzBase32.InternalUseExtensions;
 
-namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
+namespace twopointzero.TpzBase32Tests.InternalUseExtensionsTests.ExtensionsTests
 {
     [TestFixture]
-    public class DecodeQuintets
+    public class DecodeToQuintets
     {
         [Test]
         public void GivenANumberOfLegalValuesAndAtLeastOneIllegalValueShouldThrowArgumentOutOfRangeException()
         {
             var input = new[] { '2', 'o', 'z', '!', 'o' };
-            var actual = TpzBase32ConverterHelper.DecodeQuintets(input);
+            var actual = input.DecodeToQuintets();
             Assert.Throws<ArgumentOutOfRangeException>(() => actual.ToArray());
         }
 
         [Test]
         public void GivenANumberOfLegalValuesShouldReturnTheCorrectDecodedValues()
         {
-            var values = ZBase32Alphabet.Value.ToArray();
+            var values = Constants.EncodingAlphabet.ToArray();
             var expected = new byte[] { 19, 24, 12, 11, 22, 29 };
             var input = expected.Select(o => values[o]);
-            var actual = TpzBase32ConverterHelper.DecodeQuintets(input);
+            var actual = input.DecodeToQuintets();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GivenASingleIllegalValueShouldThrowArgumentOutOfRangeException()
         {
+            var input = new[] { '!' };
+
             // Call ToArray() to force evaluation of the enumerable,
             // as the underlying implementation is lazy.
-            Assert.Throws<ArgumentOutOfRangeException>(
-                () => TpzBase32ConverterHelper.DecodeQuintets(new[] { '!' }).ToArray());
+            Assert.Throws<ArgumentOutOfRangeException>(() => input.DecodeToQuintets().ToArray());
         }
 
         [Test]
         public void GivenASingleLegalValueShouldReturnASingleDecodedValue()
         {
-            var values = ZBase32Alphabet.Value.ToArray();
+            var values = Constants.EncodingAlphabet.ToArray();
             for (byte i = 0; i < values.Length; i++)
             {
+                var input = new[] { values[i] };
                 var expected = new[] { i };
-                var actual = TpzBase32ConverterHelper.DecodeQuintets(new[] { values[i] });
+                var actual = input.DecodeToQuintets();
                 CollectionAssert.AreEqual(expected, actual);
             }
         }
@@ -50,13 +53,15 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
         [Test]
         public void GivenAnEmptyEnumerableShouldReturnAnEmptyEnumerable()
         {
-            CollectionAssert.IsEmpty(TpzBase32ConverterHelper.DecodeQuintets(Enumerable.Empty<char>()));
+            var input = Enumerable.Empty<char>();
+            CollectionAssert.IsEmpty(input.DecodeToQuintets());
         }
 
         [Test]
         public void GivenNullShouldThrowArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => TpzBase32ConverterHelper.DecodeQuintets(null));
+            IEnumerable<char> input = null;
+            Assert.Throws<ArgumentNullException>(() => input.DecodeToQuintets());
         }
     }
 }

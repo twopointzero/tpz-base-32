@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using twopointzero.TpzBase32.InternalUseExtensions;
 
 namespace twopointzero.TpzBase32
 {
@@ -13,11 +14,7 @@ namespace twopointzero.TpzBase32
         /// in encoded form.</returns>
         public static string EncodeWithPadding(int input)
         {
-            var bits = TpzBase32ConverterHelper.ConvertToBitEnumerable(input);
-            var quintets = TpzBase32ConverterHelper.ConvertToQuintetEnumerable(bits);
-            var chars = TpzBase32ConverterHelper.EncodeQuintets(quintets);
-            var result = TpzBase32ConverterHelper.ConvertToString(chars);
-            return result;
+            return input.Unpack().PackToQuintets().EncodeQuintets().AsString();
         }
 
         /// <summary>
@@ -37,18 +34,18 @@ namespace twopointzero.TpzBase32
         /// to allow for clean round-tripping.</remarks>
         public static string Encode(int input)
         {
-            char zero = Constants.ZBase32Alphabet[0];
+            char zero = Constants.EncodingAlphabet[0];
 
+            // This looks like a perf optimization but it is more critically
+            // a correctness factor, as per the rules 0 encodes to a single
+            // y character whereas passing 0 into the normal encoding process
+            // would trim it down to the empty string.
             if (input == 0)
             {
                 return zero.ToString();
             }
 
-            var bits = TpzBase32ConverterHelper.ConvertToBitEnumerable(input);
-            var quintets = TpzBase32ConverterHelper.ConvertToQuintetEnumerable(bits);
-            var chars = TpzBase32ConverterHelper.EncodeQuintets(quintets);
-            var result = TpzBase32ConverterHelper.ConvertToString(chars);
-            return result.TrimEnd(zero);
+            return input.Unpack().PackToQuintets().EncodeQuintets().AsString().TrimEnd(zero);
         }
 
         /// <summary>
@@ -75,16 +72,7 @@ namespace twopointzero.TpzBase32
                                                       "Must be string of between 1 and 7 characters inclusive.");
             }
 
-            var quintets = TpzBase32ConverterHelper.DecodeQuintets(input);
-            var bits = TpzBase32ConverterHelper.ConvertQuintetsToBitEnumerable(quintets);
-            var ints = TpzBase32ConverterHelper.ConvertToIntEnumerable(bits);
-            var result = ints.First();
-            return result;
+            return input.DecodeToQuintets().UnpackQuintets().PackToInt32s().First();
         }
-
-
-        #region Nested type: Helper
-
-        #endregion
     }
 }

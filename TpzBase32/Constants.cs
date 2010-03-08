@@ -2,6 +2,6 @@
 {
     internal static class Constants
     {
-        public const string ZBase32Alphabet = "ybndrfg8ejkmcpqxot1uwisza345h769";
+        public const string EncodingAlphabet = "ybndrfg8ejkmcpqxot1uwisza345h769";
     }
 }

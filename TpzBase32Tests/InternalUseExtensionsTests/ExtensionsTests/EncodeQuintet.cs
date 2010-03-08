@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using twopointzero.TpzBase32;
+using twopointzero.TpzBase32.InternalUseExtensions;
 
-namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
+namespace twopointzero.TpzBase32Tests.InternalUseExtensionsTests.ExtensionsTests
 {
     [TestFixture]
     public class EncodeQuintet
@@ -13,7 +13,8 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
         {
             for (byte i = 32; i < 255; i++)
             {
-                Assert.Throws<ArgumentOutOfRangeException>(() => TpzBase32ConverterHelper.EncodeQuintet(i));
+                byte input = i;
+                Assert.Throws<ArgumentOutOfRangeException>(() => input.EncodeQuintet());
             }
         }
 
@@ -22,17 +23,19 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
         {
             for (byte i = 0; i < 31; i++)
             {
-                TpzBase32ConverterHelper.EncodeQuintet(i);
+                i.EncodeQuintet();
             }
         }
 
         [Test]
         public void GivenAnyLegalValueShouldProduceTheExpectedResult()
         {
-            var values = ZBase32Alphabet.Value.ToArray();
+            var values = Constants.EncodingAlphabet.ToArray();
             for (byte i = 0; i < values.Length; i++)
             {
-                Assert.AreEqual(values[i], TpzBase32ConverterHelper.EncodeQuintet(i));
+                byte input = i;
+                char expected = values[i];
+                Assert.AreEqual(expected, input.EncodeQuintet());
             }
         }
     }

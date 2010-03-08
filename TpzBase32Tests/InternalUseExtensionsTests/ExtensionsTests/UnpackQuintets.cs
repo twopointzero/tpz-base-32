@@ -1,23 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using twopointzero.TpzBase32;
+using twopointzero.TpzBase32.InternalUseExtensions;
 
-namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
+namespace twopointzero.TpzBase32Tests.InternalUseExtensionsTests.ExtensionsTests
 {
     [TestFixture]
-    public class ConvertQuintetEnumerableToBitEnumerable
+    public class UnpackQuintets
     {
         [Test]
         public void GivenAsEmptyEnumerableShouldReturnEmptyEnumerable()
         {
-            CollectionAssert.IsEmpty(TpzBase32ConverterHelper.ConvertQuintetsToBitEnumerable(Enumerable.Empty<byte>()));
+            var input = Enumerable.Empty<byte>();
+            CollectionAssert.IsEmpty(input.UnpackQuintets());
         }
 
         [Test]
         public void GivenNullShouldThrowArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => TpzBase32ConverterHelper.ConvertQuintetsToBitEnumerable(null));
+            IEnumerable<byte> input = null;
+            Assert.Throws<ArgumentNullException>(() => input.UnpackQuintets());
         }
 
         [Test]
@@ -25,7 +28,7 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
         {
             var input = new byte[] { 2 };
             var expected = new[] { false, true, false, false, false };
-            var actual = TpzBase32ConverterHelper.ConvertQuintetsToBitEnumerable(input);
+            var actual = input.UnpackQuintets();
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -35,11 +38,11 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
             var input = new byte[] { 26, 11, 31 };
             var expected = new[]
                                {
-                                   false, true, false, true, true, true, true, false, true, false, true, true, true,
-                                   true,
-                                   true
+                                   false, true, false, true, true,
+                                   true, true, false, true, false,
+                                   true, true, true, true, true
                                };
-            var actual = TpzBase32ConverterHelper.ConvertQuintetsToBitEnumerable(input);
+            var actual = input.UnpackQuintets();
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -47,8 +50,12 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
         public void GivenTwoQuintetsShouldReturnTheTenExpectedBooleanValues()
         {
             var input = new byte[] { 26, 11 };
-            var expected = new[] { false, true, false, true, true, true, true, false, true, false };
-            var actual = TpzBase32ConverterHelper.ConvertQuintetsToBitEnumerable(input);
+            var expected = new[]
+                               {
+                                   false, true, false, true, true,
+                                   true, true, false, true, false
+                               };
+            var actual = input.UnpackQuintets();
             CollectionAssert.AreEqual(expected, actual);
         }
     }

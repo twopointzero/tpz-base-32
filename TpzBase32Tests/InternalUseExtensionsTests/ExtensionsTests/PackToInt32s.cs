@@ -1,53 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using twopointzero.TpzBase32;
+using twopointzero.TpzBase32.InternalUseExtensions;
 
-namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
+namespace twopointzero.TpzBase32Tests.InternalUseExtensionsTests.ExtensionsTests
 {
     [TestFixture]
-    public class ConvertBitEnumerableToIntEnumerable
+    public class PackToInt32s
     {
         [Test]
         public void GivenEmptyShouldReturnAnEnumerableThatProducesNoResults()
         {
-            CollectionAssert.IsEmpty(TpzBase32ConverterHelper.ConvertToIntEnumerable(Enumerable.Empty<bool>()));
+            var input = Enumerable.Empty<bool>();
+            CollectionAssert.IsEmpty(input.PackToInt32s());
         }
 
         [Test]
         public void GivenFalseAndTrueShouldReturnAnEnumerableThatProducesOneResultWithTheLowBitOffSecondBitOn()
         {
+            var input = new[] { false, true };
             var expected = new[] { 2 };
-            var actual = TpzBase32ConverterHelper.ConvertToIntEnumerable(new[] { false, true });
+            var actual = input.PackToInt32s();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GivenNullShouldThrowArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => TpzBase32ConverterHelper.ConvertToIntEnumerable(null));
+            IEnumerable<bool> input = null;
+            Assert.Throws<ArgumentNullException>(() => input.PackToInt32s());
         }
 
         [Test]
         public void GivenOneFalseValueShouldReturnAnEnumerableThatProducesOneResultWithTheLowBitOff()
         {
+            var input = new[] { false };
             var expected = new[] { 0 };
-            var actual = TpzBase32ConverterHelper.ConvertToIntEnumerable(new[] { false });
+            var actual = input.PackToInt32s();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GivenOneTrueValueShouldReturnAnEnumerableThatProducesOneResultWithTheLowBitOn()
         {
+            var input = new[] { true };
             var expected = new[] { 1 };
-            var actual = TpzBase32ConverterHelper.ConvertToIntEnumerable(new[] { true });
+            var actual = input.PackToInt32s();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GivenSixtyFiveValuesShouldReturnAnEnumerableThatProducesTheThreeExpectedResults()
         {
-            var expected = new[] { 1431655765, 1431655764, 1 };
             var input = new[]
                             {
                                 true, false, true, false, true, false, true, false,
@@ -60,14 +65,14 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
                                 true, false, true, false, true, false, true, false,
                                 true
                             };
-            var actual = TpzBase32ConverterHelper.ConvertToIntEnumerable(input);
+            var expected = new[] { 1431655765, 1431655764, 1 };
+            var actual = input.PackToInt32s();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GivenSixtyFourValuesShouldReturnAnEnumerableThatProducesTheTwoExpectedResults()
         {
-            var expected = new[] { 1431655765, 1431655764 };
             var input = new[]
                             {
                                 true, false, true, false, true, false, true, false,
@@ -79,14 +84,14 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
                                 true, false, true, false, true, false, true, false,
                                 true, false, true, false, true, false, true, false
                             };
-            var actual = TpzBase32ConverterHelper.ConvertToIntEnumerable(input);
+            var expected = new[] { 1431655765, 1431655764 };
+            var actual = input.PackToInt32s();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GivenSixtyThreeValuesShouldReturnAnEnumerableThatProducesTheTwoExpectedResults()
         {
-            var expected = new[] { -1431655765, 1431655765 };
             var input = new[]
                             {
                                 true, true, false, true, false, true, false, true,
@@ -98,14 +103,14 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
                                 true, false, true, false, true, false, true, false,
                                 true, false, true, false, true, false, true
                             };
-            var actual = TpzBase32ConverterHelper.ConvertToIntEnumerable(input);
+            var expected = new[] { -1431655765, 1431655765 };
+            var actual = input.PackToInt32s();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GivenThirtyOneValuesShouldReturnAnEnumerableThatProducesTheOneExpectedPositiveResult()
         {
-            var expected = new[] { 1431655765 };
             var input = new[]
                             {
                                 true, false, true, false, true, false, true, false,
@@ -113,14 +118,14 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
                                 true, false, true, false, true, false, true, false,
                                 true, false, true, false, true, false, true
                             };
-            var actual = TpzBase32ConverterHelper.ConvertToIntEnumerable(input);
+            var expected = new[] { 1431655765 };
+            var actual = input.PackToInt32s();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GivenThirtyThreeValuesShouldReturnAnEnumerableThatProducesTheTwoExpectedResults()
         {
-            var expected = new[] { 1431655765, 1 };
             var input = new[]
                             {
                                 true, false, true, false, true, false, true, false,
@@ -129,14 +134,14 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
                                 true, false, true, false, true, false, true, false,
                                 true
                             };
-            var actual = TpzBase32ConverterHelper.ConvertToIntEnumerable(input);
+            var expected = new[] { 1431655765, 1 };
+            var actual = input.PackToInt32s();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GivenThirtyTwoValuesShouldReturnAnEnumerableThatProducesTheOneExpectedNegativeResult()
         {
-            var expected = new[] { -1431655765 };
             var input = new[]
                             {
                                 true, true, false, true, false, true, false, true,
@@ -144,14 +149,14 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
                                 false, true, false, true, false, true, false, true,
                                 false, true, false, true, false, true, false, true
                             };
-            var actual = TpzBase32ConverterHelper.ConvertToIntEnumerable(input).ToArray();
+            var expected = new[] { -1431655765 };
+            var actual = input.PackToInt32s().ToArray();
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GivenThirtyTwoValuesShouldReturnAnEnumerableThatProducesTheOneExpectedPositiveResult()
         {
-            var expected = new[] { 1431655765 };
             var input = new[]
                             {
                                 true, false, true, false, true, false, true, false,
@@ -159,7 +164,8 @@ namespace twopointzero.TpzBase32Tests.TpzBase32ConverterHelperTests
                                 true, false, true, false, true, false, true, false,
                                 true, false, true, false, true, false, true, false
                             };
-            var actual = TpzBase32ConverterHelper.ConvertToIntEnumerable(input);
+            var expected = new[] { 1431655765 };
+            var actual = input.PackToInt32s();
             CollectionAssert.AreEqual(expected, actual);
         }
     }
