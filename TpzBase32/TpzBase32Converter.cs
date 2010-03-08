@@ -53,7 +53,7 @@ namespace twopointzero.TpzBase32
                 return zero.ToString();
             }
 
-            return input.Unpack().PackToQuintets().EncodeQuintets().AsString().TrimEnd(zero);
+            return EncodeWithPadding(input).TrimEnd(zero);
         }
 
         /// <summary>
