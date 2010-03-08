@@ -5,6 +5,10 @@ using System.Text;
 
 namespace twopointzero.TpzBase32.InternalUseExtensions
 {
+    /// <summary>
+    /// This extension method class is intended for use only within the
+    /// tpz-base-32 library.
+    /// </summary>
     internal static class Extensions
     {
         /// <summary>

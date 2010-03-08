@@ -4,6 +4,14 @@ using twopointzero.TpzBase32.InternalUseExtensions;
 
 namespace twopointzero.TpzBase32
 {
+    /// <summary>
+    /// The TpzBase32Converter class provides a tpz-base-32 encoding and
+    /// decoding implementation designed for code clarity and to provide
+    /// a solid reference implementation for future optimized converters.
+    /// (A dedicated Int32 converter will be created in the immediate future.)
+    /// This class provides methods for encoding Int32 values into the
+    /// tpz-base-32 encoding and decoding strings back to Int32 values.
+    /// </summary>
     public static class TpzBase32Converter
     {
         /// <summary>
