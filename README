@@ -1,0 +1,196 @@
+------------------------------------------------------------------------------
+Introduction
+------------------------------------------------------------------------------
+
+tpz-base-32 is a library for the encoding of various values into strings
+and from such strings back into the original value(s), via the encoding
+alphabet featured in the z-base-32 encoding but with a surely-different
+coding algorithm.
+
+------------------------------------------------------------------------------
+Extensibility
+------------------------------------------------------------------------------
+
+The current implementation provides direct caller support for encoding and
+decoding of System.Int32 values but is internally constructed such that it can
+support values ranging from single bits through all sizes of .net-supported
+signed and unsigned integral values and even continuous streams of values.
+
+There are two types of encoder/decoder implementation in the library:
+1. The "Reference" implementation. This takes a iterator-based approach to
+   decomposing and implementing the encoding and decoding process, is most
+   amenable to supporting voluminous and/or entirely streaming data, is the
+   easiest to extend, and is actually of reasonably high performance all told.
+   Importantly, the "Reference" implementation provides the baseline against
+   which custom implementations are tested.
+2. "Custom" implementations. These take a direct approach to the encoding and
+   decoding process and are best suited to extremely high load usages where,
+   for example, the hundreds of thousands of round trips per second supported
+   by the "Reference" implementation simply is not good enough. "Custom"
+   implementations are tested via a standardized suite of automated unit tests
+   and exhaustively tested via comparison to an equivalent "Reference"
+   implementation.
+
+To extend tpz-base-32 to support a new input/output type, you first create
+and automate testing of new "Reference" implementation input/output type
+handling and then optionally create and automate testing of a new "Custom"-
+style implementation.
+
+Extending the Reference implementation to support a new input/output type
+requires only two noteworthy steps:
+
+1. Implement a new encoding method whose sole unique feature is the unpacking
+   of the new input type into a sequence of bits.
+2. Implement a new decoding method whose sole unique feature is the packing
+   of a sequence of bits into a sequence of values of the desired output type.
+
+All other required encoding and decoding logic is already provided in the
+reference implementation and called simply from the two methods listed above.
+
+------------------------------------------------------------------------------
+Contributing to tpz-base-32
+------------------------------------------------------------------------------
+
+Should you choose to implement support for a new input/output type, project
+contributions are most happily accepted! Two additional requirements for such
+contributions are worth mentioning immediately:
+
+1. All contributions must include comprehensive test automation, patterned off
+   of the test automation included with the most recent version of tpz-base-32
+   that is available at the time of contribution.
+2. All "Custom"-style implementation contributions must also include an
+   equivalent "Reference" implementation, unless one is already available for
+   the contributed input/output type.
+
+Since it must be said: contributions are subject to review, rejection,
+modification, etc. for any reason and without notice.
+
+------------------------------------------------------------------------------
+Source code
+------------------------------------------------------------------------------
+
+The tpz-base-32 .net implementation source code is available on GitHub at the
+following location:
+
+http://github.com/twopointzero/tpz-base-32
+
+------------------------------------------------------------------------------
+Building
+------------------------------------------------------------------------------
+
+1. Fork the twopointzero/tpz-base-32 repo on GitHub and clone your fork into
+   your local development environment.
+2. Init and update submodules, as the NUnit package is included via submodule.
+3. Build the solution using your choice of msbuild, devenv, etc.
+4. Run the unit tests using your NUnit test runner of choice.
+
+------------------------------------------------------------------------------
+Rationale
+------------------------------------------------------------------------------
+
+Why create tpz-base-32 and not just implement/use z-base-32?
+
+The z-base-32 specification provides excellent rationale for its encoding
+alphabet. The specification is, on the other hand, critically lacking in terms
+of an actual algorithmic description. The available normative implementations
+(in C and Python) are documented poorly and their automated test suites lack
+sufficient explicit input/output verification, instead being overly focused
+on round-trip comparisons that risk symmetrical behavioural errors. Further,
+the official internet location for the z-base-32 specification has been
+unavailable throughout the implementation of tpz-base-32, making it that much
+less viable a source of specification or implementation.
+
+tpz-base-32 leverages the wisdom inherent in the z-base-32 encoding alphabet
+and normalization rules while defining its own encoding and decoding process.
+
+------------------------------------------------------------------------------
+The encoding alphabet
+------------------------------------------------------------------------------
+
+tpz-base-32 uses the z-base-32 encoding alphabet, as defined by zooko et al.
+The encoding alphabet captures 5 bits per character, representing the values
+0 through 31 as follows:
+
+ybndrfg8ejkmcpqxot1uwisza345h769
+
+The selected alphabet, its casing, the letters and numbers it chooses to
+include/exclude, the order in which the characters exist within the alphabet,
+the rules for normalizing input to account for common for transcription errors
+and much more are explained in detail in the z-base-32 specification. The
+specification document's hosting domain has been unavailable throughout the
+implementation of tpz-base-32, but the following Wikipedia line (at time of
+writing) can provide a starting point:
+
+http://en.wikipedia.org/wiki/Base32#Alternative_versions
+
+------------------------------------------------------------------------------
+The encoding and decoding process
+------------------------------------------------------------------------------
+
+tpz-base-32 has been designed to be amenable to a wide range of data, ranging
+from single bits of information through various signed and unsigned numeric
+types and right on up to long (or even continuous) streams of binary
+information. It achieves this through the following conceptual encoding and
+decoding process (which any "Custom" implementation is free to optimize):
+
+Encoding:
+1. Convert the input value(s) bitwise representation into a sequence of bits
+   ordered from least significant to most significant. Signed values whose
+   bitwise representation is in two's complement are converted directly as
+   such. If converting a sequence of values, the values are introduced into
+   the sequence from first/least-significant to last/most-significant, with
+   each value's bits sequenced from least significant to most significant,
+   as mentioned previously.
+2. Convert the sequence of bits into a sequence of 5-bit numbers, with each
+   value constructed from least-significant bit to most-significant bit.
+3. Convert the sequence of 5-bit numbers into a sequence of encoded characters.
+   Each value is converted by using it is a zero-based index into the set of
+   characters in the encoding alphabet.
+4. Optionally trim the resulting sequence of characters of any trailing (in
+   other words, _most_ significant) zero values ('y' characters). If the
+   sequence consisted only of zero values ('y' characters), at least one such
+   character must be returned in the final result so as to distinguish from
+   the lack of any value.
+
+Decoding:
+1. Normalize the input string as per the z-base-32 specification.
+2. Convert the sequence of encoded characters into a sequence of 5-bit values.
+   Each value is converted by determining its zero-based index in the set of
+   characters in the encoding alphabet.
+3. Convert the sequence of 5-bit values into a sequence of bits, with each
+   5-bit value unpacked into the bit sequence in order from least
+   significant bit to most significant bit.
+4. Convert the sequence of bits into the output value(s), recreating each
+   value's bitwise representation by interpreting the sequence of bits as
+   ordered from least significant to most significant. Signed values whose
+   bitwise representation is in two's complement are converted directly as
+   such. If converting a sequence of values, the values are extracted from
+   the sequence from first/least-significant to last/most-significant, with
+   each value's bits sequenced from least significant to most significant,
+   as mentioned previously.
+
+------------------------------------------------------------------------------
+Contact
+------------------------------------------------------------------------------
+
+If you have any questions or comments about tpz-base-32, feel free to get in
+touch by emailing jeremy@jeremygray.ca or by opening an issue at: 
+
+http://github.com/twopointzero/tpz-base-32/issues
+
+------------------------------------------------------------------------------
+License (modified BSD)
+------------------------------------------------------------------------------
+
+Copyright (c) 2010, twopointzero Solutions Inc.
+All rights reserved. 
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+
+3. Neither the names twopointzero Solutions Inc., tpz-base-32, TpzBase32 nor the names of this software's contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
