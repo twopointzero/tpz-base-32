@@ -2,38 +2,38 @@
 using NUnit.Framework;
 using twopointzero.TpzBase32;
 
-namespace twopointzero.TpzBase32Tests.TpzBase32ConverterTests
+namespace twopointzero.TpzBase32Tests.ReferenceConverterTests
 {
     [TestFixture]
     public class DecodeStringToInt32
     {
         private static void Decode(string input, int expected)
         {
-            Assert.AreEqual(expected, TpzBase32Converter.DecodeToInt32(input));
+            Assert.AreEqual(expected, ReferenceConverter.DecodeToInt32(input));
         }
 
         [Test]
         public void GivenEmptyShouldThrowArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => TpzBase32Converter.DecodeToInt32(string.Empty));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ReferenceConverter.DecodeToInt32(string.Empty));
         }
 
         [Test]
         public void GivenNullShouldThrowArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => TpzBase32Converter.DecodeToInt32(null));
+            Assert.Throws<ArgumentNullException>(() => ReferenceConverter.DecodeToInt32(null));
         }
 
         [Test]
         public void GivenOverlongButOtherwiseValidShouldThrowArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => TpzBase32Converter.DecodeToInt32("yyyyyyyyyyy"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ReferenceConverter.DecodeToInt32("yyyyyyyyyyy"));
         }
 
         [Test]
         public void GivenSupportedLengthButOtherwiseInvalidShouldThrowArgumentOutOfRangeException()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => TpzBase32Converter.DecodeToInt32("yy!yyyy"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ReferenceConverter.DecodeToInt32("yy!yyyy"));
         }
 
         [Test]

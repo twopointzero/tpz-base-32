@@ -59,12 +59,12 @@
     <Compile Include="InternalUseExtensionsTests\ExtensionsTests\EnumerableOfCharAsString.cs" />
     <Compile Include="InternalUseExtensionsTests\ExtensionsTests\DecodeToQuintet.cs" />
     <Compile Include="InternalUseExtensionsTests\ExtensionsTests\DecodeToQuintets.cs" />
-    <Compile Include="TpzBase32ConverterTests\DecodeStringToInt32.cs" />
-    <Compile Include="TpzBase32ConverterTests\EncodeInt32ToString.cs" />
-    <Compile Include="TpzBase32ConverterTests\EncodeInt32ToStringWithPadding.cs" />
+    <Compile Include="ReferenceConverterTests\DecodeStringToInt32.cs" />
+    <Compile Include="ReferenceConverterTests\EncodeInt32ToString.cs" />
+    <Compile Include="ReferenceConverterTests\EncodeInt32ToStringWithPadding.cs" />
     <Compile Include="InternalUseExtensionsTests\ExtensionsTests\EncodeQuintets.cs" />
     <Compile Include="InternalUseExtensionsTests\ExtensionsTests\NormalizeStringToTpzBase32Alphabet.cs" />
-    <Compile Include="TpzBase32ConverterTests\RoundTripInt32.cs" />
+    <Compile Include="ReferenceConverterTests\RoundTripInt32.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InternalUseExtensionsTests\ExtensionsTests\PackToQuintets.cs" />
