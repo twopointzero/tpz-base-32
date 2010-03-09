@@ -2,14 +2,14 @@
 using NUnit.Framework;
 using twopointzero.TpzBase32;
 
-namespace twopointzero.TpzBase32Tests.ReferenceConverterTests
+namespace twopointzero.TpzBase32Tests.Int32ConverterTests
 {
     [TestFixture]
     public class EncodeInt32ToString
     {
         private static void Encode(int input, string expected)
         {
-            Assert.AreEqual(expected, ReferenceConverter.Encode(input));
+            Assert.AreEqual(expected, Int32Converter.Encode(input));
         }
 
         [Test]

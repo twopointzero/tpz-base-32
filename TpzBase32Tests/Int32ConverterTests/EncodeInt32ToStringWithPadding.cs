@@ -2,14 +2,14 @@
 using NUnit.Framework;
 using twopointzero.TpzBase32;
 
-namespace twopointzero.TpzBase32Tests.ReferenceConverterTests
+namespace twopointzero.TpzBase32Tests.Int32ConverterTests
 {
     [TestFixture]
     public class EncodeInt32ToStringWithPadding
     {
         private static void Encode(int input, string expected)
         {
-            Assert.AreEqual(expected, ReferenceConverter.EncodeWithPadding(input));
+            Assert.AreEqual(expected, Int32Converter.EncodeWithPadding(input));
         }
 
         [Test]

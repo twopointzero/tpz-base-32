@@ -152,6 +152,12 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
                 throw new ArgumentNullException("input");
             }
 
+            var charArray = input as char[];
+            if (charArray != null)
+            {
+                return new string(charArray);
+            }
+
             var sb = new StringBuilder();
             foreach (var item in input)
             {

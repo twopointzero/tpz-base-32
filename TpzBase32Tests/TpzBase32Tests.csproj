@@ -53,6 +53,10 @@
     <Compile Include="..\AssemblyInfoCommon.cs">
       <Link>Properties\AssemblyInfoCommon.cs</Link>
     </Compile>
+    <Compile Include="Int32ConverterTests\DecodeStringToInt32.cs" />
+    <Compile Include="Int32ConverterTests\EncodeInt32ToString.cs" />
+    <Compile Include="Int32ConverterTests\EncodeInt32ToStringWithPadding.cs" />
+    <Compile Include="Int32ConverterTests\RoundTripInt32.cs" />
     <Compile Include="InternalUseExtensionsTests\ExtensionsTests\NormalizeCharToTpzBase32Alphabet.cs" />
     <Compile Include="InternalUseExtensionsTests\ExtensionsTests\PackToInt32s.cs" />
     <Compile Include="InternalUseExtensionsTests\ExtensionsTests\UnpackQuintets.cs" />
