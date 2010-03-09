@@ -103,7 +103,7 @@ namespace twopointzero.TpzBase32
         /// to assist in locating encoded values within other larger pieces of
         /// text, but as a result it may modify other portions of the input
         /// string in unexpected ways.</remarks>
-        public static string Normalize(this string input)
+        public static string Normalize(string input)
         {
             return input.NormalizeToTpzBase32Alphabet();
         }
@@ -121,7 +121,7 @@ namespace twopointzero.TpzBase32
         /// <param name="input">A char containing a 
         /// character that is expected to represent an encoded value.</param>
         /// <returns>The input character, normalized if it was required.</returns>
-        public static char Normalize(this char input)
+        public static char Normalize(char input)
         {
             return input.NormalizeToTpzBase32Alphabet();
         }
