@@ -118,7 +118,7 @@ include/exclude, the order in which the characters exist within the alphabet,
 the rules for normalizing input to account for common for transcription errors
 and much more are explained in detail in the z-base-32 specification. The
 specification document's hosting domain has been unavailable throughout the
-implementation of tpz-base-32, but the following Wikipedia line (at time of
+implementation of tpz-base-32, but the following Wikipedia link (at time of
 writing) can provide a starting point:
 
 http://en.wikipedia.org/wiki/Base32#Alternative_versions
