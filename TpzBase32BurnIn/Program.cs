@@ -9,7 +9,7 @@ namespace twopointzero.TpzBase32BurnIn
         private static void Main()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            for (int i = int.MinValue; i <= int.MaxValue; i++)
+            for (long i = int.MinValue; i <= int.MaxValue; i++)
             {
                 if (i % 1000000 == 0)
                 {
@@ -20,11 +20,11 @@ namespace twopointzero.TpzBase32BurnIn
                     var ticksPerStep = ticks / step;
                     var stepsRemaining = range - step;
                     var ticksRemaining = ticksPerStep * stepsRemaining;
-                    Console.WriteLine(string.Format("{0}: {1} (ETA {2}.)", elapsed, i,
-                                                    TimeSpan.FromTicks(ticksRemaining)));
+                    TimeSpan eta = TimeSpan.FromTicks(ticksRemaining);
+                    Console.WriteLine(string.Format("{0}: {1} (ETA {2} @{3}.)", elapsed, i, eta, DateTime.Now + eta));
                 }
 
-                int input = i;
+                int input = (int)i;
 
                 var int32EncodedWithPadding = Int32Converter.EncodeWithPadding(input);
                 var referenceEncodedWithPadding = ReferenceConverter.EncodeWithPadding(input);
