@@ -33,7 +33,7 @@ namespace twopointzero.TpzBase32Tests.InternalUseExtensionsTests.ExtensionsTests
         }
 
         [Test]
-        public void GivenAValueThatShouldBeNormalizeToTpzBase32AlphabetdShouldReturnItAsExpected()
+        public void GivenAValueThatShouldBeNormalizedToTpzBase32AlphabetShouldReturnItAsExpected()
         {
             NormalizeToTpzBase32Alphabet("0l2v", "o1zu");
         }
@@ -47,7 +47,7 @@ namespace twopointzero.TpzBase32Tests.InternalUseExtensionsTests.ExtensionsTests
         }
 
         [Test]
-        public void GivenAnUppercasedValueThatShouldBeNormalizeToTpzBase32AlphabetdShouldReturnItAsExpected()
+        public void GivenAnUppercasedValueThatShouldBeNormalizedToTpzBase32AlphabetShouldReturnItAsExpected()
         {
             NormalizeToTpzBase32Alphabet("0L2V", "o1zu");
         }
