@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TpzBase32BurnIn", "TpzBase32BurnIn\TpzBase32BurnIn.csproj", "{5EEE82E1-BBF4-4EF8-B495-B175A105E958}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{6B6911A2-6807-4786-8154-884154AD916B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation", "Packages\twopointzero.Validation\Validation\Validation.csproj", "{DF89EBF0-6F5B-4E26-A4F0-0851E9C9A78F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,8 +34,15 @@ Global
 		{5EEE82E1-BBF4-4EF8-B495-B175A105E958}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EEE82E1-BBF4-4EF8-B495-B175A105E958}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EEE82E1-BBF4-4EF8-B495-B175A105E958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF89EBF0-6F5B-4E26-A4F0-0851E9C9A78F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF89EBF0-6F5B-4E26-A4F0-0851E9C9A78F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF89EBF0-6F5B-4E26-A4F0-0851E9C9A78F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF89EBF0-6F5B-4E26-A4F0-0851E9C9A78F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DF89EBF0-6F5B-4E26-A4F0-0851E9C9A78F} = {6B6911A2-6807-4786-8154-884154AD916B}
 	EndGlobalSection
 EndGlobal

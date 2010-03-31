@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using twopointzero.Validation;
 
 namespace twopointzero.TpzBase32.InternalUseExtensions
 {
@@ -55,10 +56,7 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         /// values that is not an even multiple of five.</remarks>
         internal static IEnumerable<byte> PackToQuintets(this IEnumerable<bool> input)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
+            Validator.IsNotNull(input, "input");
 
             return input.PackToUInt32s(5).Select(o => (byte)o);
         }
@@ -102,10 +100,7 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         /// per the tpz-base-32 encoding alphabet.</returns>
         internal static char EncodeQuintet(this byte input)
         {
-            if (input > 31)
-            {
-                throw new ArgumentOutOfRangeException("input");
-            }
+            Validator.IsLessThan(input, "input", 32);
 
             return Constants.EncodingAlphabet[input];
         }
@@ -129,10 +124,7 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         /// the returned enumerator.</remarks>
         internal static IEnumerable<char> EncodeQuintets(this IEnumerable<byte> input)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
+            Validator.IsNotNull(input, "input");
 
             return input.Select(o => o.EncodeQuintet());
         }
@@ -147,10 +139,7 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         /// members, an empty string is returned.</returns>
         internal static string AsString(this IEnumerable<char> input)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
+            Validator.IsNotNull(input, "input");
 
             var charArray = input as char[];
             if (charArray != null)
@@ -188,10 +177,7 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         /// string in unexpected ways.</remarks>
         internal static string NormalizeToTpzBase32Alphabet(this string input)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
+            Validator.IsNotNull(input, "input");
 
             if (input.Length == 0)
             {
@@ -280,10 +266,7 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         /// the returned enumerator.</remarks>
         internal static IEnumerable<byte> DecodeToQuintets(this IEnumerable<char> input)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
+            Validator.IsNotNull(input, "input");
 
             return input.Select(o => o.DecodeToQuintet());
         }
@@ -302,10 +285,7 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         /// within each quintet are ordered from least signficant bit to most.</returns>
         internal static IEnumerable<bool> UnpackQuintets(this IEnumerable<byte> input)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
+            Validator.IsNotNull(input, "input");
 
             return input.SelectMany(o => Unpack(o, 5));
         }
@@ -329,10 +309,7 @@ namespace twopointzero.TpzBase32.InternalUseExtensions
         /// complement behaviour you would reasonably expect with an Int32.</remarks>
         internal static IEnumerable<int> PackToInt32s(this IEnumerable<bool> input)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
+            Validator.IsNotNull(input, "input");
 
             return input.PackToUInt32s(32).Select(o => (int)o);
         }

@@ -56,6 +56,12 @@
     <Compile Include="ReferenceConverter.cs" />
     <Compile Include="InternalUseExtensions\Extensions.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Packages\twopointzero.Validation\Validation\Validation.csproj">
+      <Project>{DF89EBF0-6F5B-4E26-A4F0-0851E9C9A78F}</Project>
+      <Name>Validation</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

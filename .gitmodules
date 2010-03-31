@@ -1,3 +1,6 @@
 [submodule "Packages/NUnit"]
 	path = Packages/NUnit
 	url = git://github.com/twopointzero/NUnit.git
+[submodule "Packages/twopointzero.Validation"]
+	path = Packages/twopointzero.Validation
+	url = git://github.com/twopointzero/twopointzero.Validation.git

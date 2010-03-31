@@ -1,5 +1,5 @@
-﻿using System;
-using twopointzero.TpzBase32.InternalUseExtensions;
+﻿using twopointzero.TpzBase32.InternalUseExtensions;
+using twopointzero.Validation;
 
 namespace twopointzero.TpzBase32
 {
@@ -18,16 +18,7 @@ namespace twopointzero.TpzBase32
 
         public static int DecodeToInt32(string input)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
-
-            if (input.Length == 0 || input.Length > 7)
-            {
-                throw new ArgumentOutOfRangeException("input", input,
-                                                      "Must be string of between 1 and 7 characters inclusive.");
-            }
+            Validator.HasLengthInclusive(input, "input", 1, 7);
 
             int result = 0;
             for (int i = 0; i < input.Length; i++)
